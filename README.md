@@ -1,2 +1,0 @@
-# requests
-golang http client
