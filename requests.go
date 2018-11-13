@@ -1,6 +1,7 @@
 package requests
 
 import (
+	"context"
 	"io/ioutil"
 	"net/http"
 	"net/http/cookiejar"
@@ -17,7 +18,9 @@ type Option struct {
 	ConnectTimeout   time.Duration
 	ReadWriteTimeout time.Duration
 	Cookie           http.CookieJar
-	proxy            string
+
+	ctx   context.Context
+	proxy string
 }
 
 func defaultOption() Option {
@@ -26,6 +29,7 @@ func defaultOption() Option {
 		ConnectTimeout:   5 * time.Second,
 		ReadWriteTimeout: 5 * time.Second,
 		Cookie:           cookie,
+		ctx:              context.Background(),
 	}
 }
 
@@ -33,6 +37,13 @@ func defaultOption() Option {
 func SetProxy(proxy string) OptHandle {
 	return func(opt *Option) {
 		opt.proxy = proxy
+	}
+}
+
+// SetContext func
+func SetContext(ctx context.Context) OptHandle {
+	return func(opt *Option) {
+		opt.ctx = ctx
 	}
 }
 
